@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.movie.dao.IOrderDao">
+ 
+ 	<insert id="getOrder" parameterType="com.movie.dto.OrderVO">
+ 		insert into orderss(orderno, id, movieno, quantity1, quantity2, seat, movietime, moviedate, totalprice)
+ 		values(orderno_seq.nextval, #{id}, #{movieno}, #{quantity1}, #{quantity2}, #{seat}, #{movietime}, #{moviedate}, #{totalprice})
+ 	</insert>
+ 	
+ 	<insert id="insertOrder" parameterType="com.movie.dto.OrderVO">
+ 		insert into orders(orderno, id, movieno, quantity1, quantity2, cinemas, seat, movietime, moviedate, totalprice)
+ 		values(orderno_seq.nextval, #{id}, #{movieno}, #{quantity1}, #{quantity2}, #{cinemas}, #{seat}, #{movietime}, #{moviedate}, #{totalprice})
+ 	</insert>
+ 
+ 	<delete id="deleteOrdersMember" parameterType ="com.movie.dto.OrderVO">
+		delete from members where id=#{id}
+	</delete>
+	
+	<select id="listOrder" resultType="com.movie.dto.OrderVO">
+		select * from (
+		select * from (
+		select rownum as rn, p.* from
+		((SELECT ode.orderno, ode.id, ode.movieno,
+		(SELECT title FROM movie WHERE movieno = ode.movieno ) as title,
+		(SELECT image FROM movie WHERE movieno = ode.movieno ) as image,
+		ode.quantity1, ode.quantity2, ode.cinemas, ode.seat, ode.movietime, ode.moviedate, ode.totalprice,
+		ode.orderdate FROM orders ode where id=#{param1} order by orderno desc) p)
+		) where rn &gt;= #{param2.startNum} 
+		) where rn &lt;= #{param2.endNum}
+	</select>
+	
+	 <select id="getOrderList" resultType="com.movie.dto.OrderVO">
+	 	SELECT ode.*,
+	 	(SELECT title FROM movie WHERE movieno = ode.movieno ) as title,
+		(SELECT image FROM movie WHERE movieno = ode.movieno ) as image
+		FROM orders ode where orderno=#{param1}
+	</select>
+	
+	<delete id="deleteMovie" parameterType ="com.movie.dto.OrderVO">
+		delete from orders where movieno=#{moiveno}
+	</delete>
+	
+	<delete id="deleteOrder" parameterType ="com.movie.dto.OrderVO">
+		delete from orders where orderno=#{param1}
+	</delete>
+ </mapper>
+ 

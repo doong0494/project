@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+        
+<mapper namespace="com.movie.dao.IAdminDao">
+<select id="getManager" resultType="com.movie.dto.AdminVO"> 
+	select * from workers where id=#{param1}
+</select>
+		
+<update id="updateManager" parameterType ="com.movie.dto.AdminVO">
+	Update workers set pwd=#{pwd}, name=#{name}, phone=#{phone}, email=#{email} where id = #{id}
+</update>
+	
+<select id="getAllCount" resultType="_int">
+	select count(*) from ${param1} where ${param2} like '%'||#{param3}||'%'
+</select>
+
+<select id="getAllCount3" resultType ="int"> 
+	select count(*) from orders
+</select>
+
+<select id="getAllCount2" resultType ="_int"> 
+	select count(*) from qna 
+</select>
+
+<select id="listMovie" resultType ="com.movie.dto.MovieVO"> 
+	select * from
+		( select * from
+		( select rownum as rn, t.*  from
+		( select * from movie WHERE title LIKE '%' ||  #{param2} || '%'
+		order by movieno desc) t
+		) where rn &gt;= #{param1.startNum} 
+		) where rn &lt;= #{param1.endNum} 
+</select>
+<insert id="insertMovie" parameterType="com.movie.dto.MovieVO">
+	INSERT INTO MOVIE(
+		MOVIENO
+		, TITLE
+		, DIRECTOR
+		, ACTOR
+		, GENRE
+		, AGEGRADE
+		, PLAYTIME
+		, OPENDATE
+		, IMAGE
+		, VIDEO
+		, CONTENT
+	) VALUES (
+		MOVIE_SEQ.NEXTVAL
+		, #{title}
+		, #{director}
+		, #{actor}
+		, #{genre}
+		, #{agegrade}
+		, #{playtime}
+		, #{opendate}
+		, #{image}
+		, #{video}
+		, #{content}
+	)
+</insert>
+<select id="listMember" resultType ="com.movie.dto.MemberVO"> 
+	select * from
+		( select * from
+		( select rownum as rn, t.*  from
+		( select * from members WHERE id LIKE '%' ||  #{param2} || '%'
+		order by id desc) t
+		) where rn &gt;= #{param1.startNum} 
+		) where rn &lt;= #{param1.endNum} 
+</select>
+
+<select id="listQna" resultType="com.movie.dto.QnaVO">
+select * from
+		( select * from
+		( select rownum as rn, t.*  from
+		( select * from qna WHERE id LIKE '%' ||  #{param2} || '%'
+		order by qseq desc) t
+		) where rn &gt;= #{param1.startNum} 
+		) where rn &lt;= #{param1.endNum} 
+ </select>
+ 
+<select id="listQna2" resultType="com.movie.dto.QnaVO">
+select * from
+		( select * from
+		( select rownum as rn, t.*  from
+		( select * from qna WHERE id=#{param1}
+		order by qseq desc) t
+		) where rn &gt;= #{param2.startNum} 
+		) where rn &lt;= #{param2.endNum} 
+ </select>
+ 
+<select id="getQna" resultType="com.movie.dto.QnaVO">
+select * from qna where qseq=#{param1} 
+	</select>
+
+<update id="updateQna" parameterType ="com.movie.dto.QnaVO">
+update qna set reply=#{reply}, rep='2' where qseq=#{qseq}
+</update>
+
+<update id="updateMovie" parameterType ="com.movie.dto.MovieVO" >
+update movie set title=#{title}, director=#{director}, actor=#{actor}, genre=#{genre}, 
+agegrade=#{agegrade}, playtime=#{playtime}, opendate=#{opendate}, image=#{image}, 
+video=#{video}, useyn=#{useyn}, content=#{content} where movieno=#{movieno}
+</update>
+
+<delete id="movieDelete" parameterType ="com.movie.dto.MovieVO">
+delete from movie where movieno=#{param1}
+</delete>
+
+</mapper>	
+ 

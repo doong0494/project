@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+        
+ <mapper namespace="com.movie.dao.IMemberDao">
+ 
+ 	<select id="getMember" resultType="com.movie.dto.MemberVO">
+		select * from members where id=#{param1}
+	</select>
+	<insert id="insertMember" parameterType ="com.movie.dto.MemberVO">
+		insert into members(id, pwd, name, phone, email) 
+		values(#{id}, #{pwd}, #{name},#{phone}, #{email})
+	</insert>
+	
+	<update id="updateMember" parameterType ="com.movie.dto.MemberVO">
+		Update members set pwd=#{pwd}, name=#{name}, phone=#{phone}, email=#{email} where id = #{id}
+	</update>
+	
+	<delete id="deleteMember" parameterType ="com.movie.dto.MemberVO">
+		delete from members where id=#{id}
+	</delete>
+	
+	<delete id="deleteQnaMember" parameterType ="com.movie.dto.QnaVO">
+		delete from qna where id=#{id}
+	</delete>
+	
+	<delete id="deleteOrdersMember" parameterType ="com.movie.dto.OrderVO">
+		delete from orders where id=#{id}
+	</delete>
+	<select id="confirmPhone" resultType="com.movie.dto.MemberVO">
+		select * from members where name=#{param1} and phone=#{param2}
+	</select>
+	
+	<select id="confirmIdnamePhone" resultType="com.movie.dto.MemberVO">
+		select * from members where id=#{param1} and name=#{param2} and phone=#{param3}
+	</select>
+	
+		<update id="resetPwd" parameterType ="com.movie.dto.MemberVO">
+	update members set pwd =#{pwd} where id =#{id}
+	</update>
+	
+</mapper>

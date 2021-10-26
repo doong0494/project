@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ <mapper namespace="com.movie.dao.ITheaterDao">
+ 	
+ 	<select id="getTheater" resultType="com.movie.dto.TheaterVO">
+ 		select * from theaters
+	</select>
+	
+	<select id="getOrder" resultType="com.movie.dto.TheaterVO">
+ 		select * from theaters where cinemas=#{cinemas}
+	</select>
+ 	
+ 	<select id="selectTheater" resultType="com.movie.dto.TheaterVO">
+ 		select * from theaters where cinemas=#{cinemas}
+	</select>
+ 	
+</mapper>
